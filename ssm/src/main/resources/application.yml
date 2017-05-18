@@ -1,0 +1,74 @@
+########################################################
+### spring mvc setting
+########################################################
+server:
+  port: 8090
+  contextPath:
+  session:
+    timeout: 28800  #8 hours before time-out
+    cookie:
+      secure: false
+
+
+spring:
+  mvc:
+    favicon:
+      enabled: false
+  thymeleaf:
+    cache: false
+    cache-period: 0
+  template:
+    cache: false
+  mail:
+      host: smtp.qq.com
+      username: 835088577@qq.com
+      password: 12345678
+      properties:
+        mail:
+          smtp:
+            auth: true
+            starttls.enable: true  #对纯文本通信协议的扩展。它提供一种方式将纯文本连接升级为加密连接（TLS或SSL）
+
+
+########################################################
+### common setting
+########################################################
+logging:
+  config: classpath:logback.xml
+# used by the git plugin
+info:
+  build:
+    artifact: "@project.artifactId@"
+    version: "@project.version@"
+
+
+########################################################
+### database(mysql) setting
+########################################################
+config:
+  db:
+    url: jdbc:mysql://localhost:3306/sso?prepStmtCacheSize=517&cachePrepStmts=true&autoReconnect=true&characterEncoding=utf-8
+    username: root
+    password: sql3466
+    maxActive: 50
+
+
+########################################################
+### common setting
+########################################################
+# upload file
+multipart:
+  max-file-size: 100Mb
+  max-request-size: 100Mb
+
+########################################################
+### product feature
+########################################################
+endpoints:
+  enabled: false
+  jmx:
+    enabled: false
+  health:
+    enabled: true
+  info:
+    enabled: true

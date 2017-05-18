@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>事件处理</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- MetisMenu CSS -->
+    <link href="/vendor/metisMenu/metisMenu.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Fonts -->
+    <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Custom CSS -->
+    <link href="/admin/css/sb-admin-2.css" rel="stylesheet" type="text/css" />
+
+    <style type="text/css">
+        #demo { width: 400px; margin: 0 auto; text-align: center; }
+        #controls { text-align: center; }
+
+        #demo #notes   { margin-bottom: 1em; }
+        #demo #diagram { width: 400px; height: 275px; }
+        #demo #output  { width: 100%;  height: 30em;  }
+
+        #demo.green  #diagram { background: url(/page/img/demo/alerts.green.png);  }
+        #demo.yellow #diagram { background: url(/page/img/demo/alerts.yellow.png); }
+        #demo.red    #diagram { background: url(/page/img/demo/alerts.red.png);    }
+
+        #autodemo { width: 400px; margin: 0 auto; text-align: center; }
+
+        #autodemo #autonotes   { margin-bottom: 1em; }
+        #autodemo #autodiagram { width: 400px; height: 275px; }
+        #autodemo #autooutput  { width: 100%;  height: 30em;  }
+
+        #autodemo.green  #autodiagram { background: url(/page/img/demo/alerts.green.png);  }
+        #autodemo.yellow #autodiagram { background: url(/page/img/demo/alerts.yellow.png); }
+        #autodemo.red    #autodiagram { background: url(/page/img/demo/alerts.red.png);    }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <div th:replace="fragments/header :: header">Header</div>
+
+        <!-- Sidebar -->
+        <div th:replace="fragments/sidebar :: sidebar">Sidebar</div>
+
+        <!-- Page Content -->
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">状态机模拟</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            事件处理模拟
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <!-- /.col-lg-6 (nested) -->
+                                <div class="col-lg-6">
+                                    <h3>状态机</h3>
+                                    <div id="demo" class="green">
+                                        <div id="controls">
+                                            <button id="clear" onclick="Demo.clear();">clear</button>
+                                            <button id="calm"  onclick="Demo.calm();">calm</button>
+                                            <button id="warn"  onclick="Demo.warn();">warn</button>
+                                            <button id="panic" onclick="Demo.panic();">panic!</button>
+                                        </div>
+
+                                        <div id="diagram">
+                                        </div>
+
+                                        <div id="notes">
+                                            <i>dashed lines are asynchronous state transitions (3 seconds)</i>
+                                        </div>
+
+                                        <textarea id="output">
+                                        </textarea>
+                                    </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+
+                                <div class="col-lg-6">
+                                    <h3>自动状态机</h3>
+                                    <div id="autodemo" class="green">
+                                        <div id="autocontrols">
+                                            <button id="autoclear" onclick="Auto.clear();">clear</button>
+                                            <button id="autocalm"  onclick="Auto.calm();">calm</button>
+                                            <button id="autowarn"  onclick="Auto.warn();">warn</button>
+                                            <button id="autopanic" onclick="Auto.panic();">panic!</button>
+                                        </div>
+
+                                        <div id="autodiagram">
+                                        </div>
+
+                                        <div id="autonotes">
+                                            <i>绿灯21s，红灯13s，黄灯3s</i>
+                                        </div>
+
+                                        <textarea id="autooutput">
+                                        </textarea>
+                                    </div>
+
+                                    <div style="margin: 0 50px;">
+                                        <h3>参数设置</h3>
+                                        <div class="row">
+                                            <input id="redLightTimeout" type="text" placeholder="超时时间" />
+                                            <button id="redLight" type="button" class="btn btn-default">红灯</button>
+                                        </div>
+
+                                        <div class="row">
+                                            <input id="greenLightTimeout" type="text" placeholder="超时时间" />
+                                            <button id="greenLight" type="button" class="btn btn-default">绿灯</button>
+                                        </div>
+
+                                        <div class="row">
+                                            <input id="yellowLightTimeout" type="text" placeholder="超时时间" />
+                                            <button id="yellowLight" type="button" class="btn btn-default">黄灯</button>
+                                        </div>
+
+                                        <div class="row">
+                                            <button id="startState" type="button" class="btn btn-default">Start</button>
+                                            <button id="resetState" type="button" class="btn btn-default">Reset</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- Footer -->
+    <div th:replace="fragments/footer :: footer">footer</div>
+
+    <!-- jQuery -->
+    <script src="/vendor/jquery/jquery.min.js"></script>
+
+    <!-- FSM -->
+    <script src="/vendor/machine/state-machine.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="/vendor/metisMenu/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="/admin/js/sb-admin-2.js"></script>
+
+    <script src="/page/js/demo/fsm.js"></script>
+
+    <script src="/page/js/demo/autofsm.js"></script>
+
+</body>
+
+</html>
